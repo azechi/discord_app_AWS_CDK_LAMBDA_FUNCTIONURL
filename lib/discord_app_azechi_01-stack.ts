@@ -1,19 +1,20 @@
 import { Duration, Stack, StackProps } from 'aws-cdk-lib';
-import * as sns from 'aws-cdk-lib/aws-sns';
-import * as subs from 'aws-cdk-lib/aws-sns-subscriptions';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
+//import * as sns from 'aws-cdk-lib/aws-sns';
+//import * as subs from 'aws-cdk-lib/aws-sns-subscriptions';
+//import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
+
+import * as go from '@aws-cdk/aws-lambda-go-alpha'
+import { Architecture } from 'aws-cdk-lib/aws-lambda';
 
 export class DiscordAppAzechi01Stack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const queue = new sqs.Queue(this, 'DiscordAppAzechi01Queue', {
-      visibilityTimeout: Duration.seconds(300)
+    new go.GoFunction(this, 'handler',{
+      entry: "lib/InteractionEndpoint",
+      architecture: Architecture.ARM_64,
     });
 
-    const topic = new sns.Topic(this, 'DiscordAppAzechi01Topic');
-
-    topic.addSubscription(new subs.SqsSubscription(queue));
   }
 }
