@@ -9,10 +9,12 @@ export class DiscordAppAzechi01Stack extends Stack {
     super(scope, id, props);
 
     new InteractionEndpoint(this, 'interactionendpoint', {
-      PublicKey: new CfnParameter(this, "publicKey")
+      PublicKey: new CfnParameter(this, "PublicKey")
     });
 
-    new Workflow(this, 'workflow', {});
+    new Workflow(this, 'workflow', {
+      WebhookUrl: new CfnParameter(this, "WebhookUrl")
+    });
   }
 }
 
